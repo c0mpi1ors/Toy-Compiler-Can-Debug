@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <!-- Associate Toy Compiler item type with .toy files -->
+  <ItemType Name="ToyCC" DisplayName="Toy Compiler" />
+  <ContentType Name="ToyCC" ItemType="ToyCC" DisplayName="Toy Compiler" />
+  <FileExtension Name=".toy" ContentType="ToyCC" />
+</ProjectSchemaDefinitions>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <!-- Include definitions from toycc.xml, which defines the ToyCC item. -->
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)toycc.xml" />
+    <!-- Hook up ToyCC items to be built by the Toy target. -->
+    <AvailableItemName Include="ToyCC">
+      <Targets>TOYCC</Targets>
+    </AvailableItemName>
+  </ItemGroup>
+
+  <Target
+    Name="TOYCC"
+    Condition="'@(ToyCC)' != ''"
+    BeforeTargets="ClCompile">
+    
+	<Message Importance="High" Text="Building Toy!!!" />
+	
+	<!-- Setup metadata for custom build tool -->
+	<ItemGroup>
+		<ToyCC>
+			<Message>"ToyCC.exe" %(FullPath) $(Platform)\$(Configuration)\%(Filename).obj</Message>
+			<Command>
+				"$(SolutionDir)\VS2019-Toolset\toycc.exe" %(FullPath) $(Platform)\$(Configuration)\%(Filename).obj
+			</Command>
+			<Outputs>$(Platform)\$(Configuration)\%(Filename).obj</Outputs>
+		</ToyCC>
+	</ItemGroup>
+
+	<!-- Compile by forwarding to the Custom Build Tool infrastructure -->
+	<CustomBuild
+		Sources="@(ToyCC)" 
+		MinimalRebuildFromTracking="true"
+		ErrorListRegex="(?'FILENAME'.+):(?'LINE'\d+):(?'COLUMN'\d+): (?'CATEGORY'error|warning): (?'TEXT'.*)"
+		/>
+  </Target>
+</Project>
